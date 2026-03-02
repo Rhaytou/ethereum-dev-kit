@@ -1,0 +1,52 @@
+# =============================================================================
+# Ethereum Dev Kit — .gitignore
+# =============================================================================
+
+# --- Environment / Secrets (NEVER commit these) ---
+.env
+ethereum-gui/.env
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+envName/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.eggs/
+.pytest_cache/
+
+# --- Node / Vite ---
+ethereum-gui/node_modules/
+ethereum-gui/dist/
+ethereum-gui/.vite/
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Editor ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- Docker ---
+*.log
+
+## --- Ethereum ---
+jwt.hex
+
+# --- Wallet files (contain encrypted keys — keep out of version control) ---
+# Uncomment the line below if you do NOT want to commit wallet files
+*.wallet
+
+# --- Utils ---
+project_dump.txt
+
+

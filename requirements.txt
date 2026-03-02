@@ -1,0 +1,22 @@
+# Core
+python-dotenv>=1.0.0
+requests
+requests[socks]
+
+# Wallet — BIP-39/32/44
+mnemonic==0.21
+pycryptodome>=3.17
+
+# Ethereum — keys, addresses, hashing
+eth-keys>=0.4.0
+eth-utils>=2.0.0
+
+# Transactions — RLP encoding, EIP-1559
+rlp>=3.0.0
+
+# Tests
+pytest>=7.0
+
+
+
+

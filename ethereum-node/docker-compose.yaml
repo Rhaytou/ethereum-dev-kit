@@ -1,0 +1,129 @@
+services:
+  node-load-balancer_service:
+    container_name: node-load-balancer_container
+    build:
+      context: ./dockerfile/node-load-balancer
+      dockerfile: Dockerfile
+    depends_on:
+      - ethereum-geth-node_service
+      - ethereum-prysm-node_service
+    #ports: # Make sure to uncomment if are not using network_mode on host
+    #  - "8000:8000"
+    volumes:
+      - ./dockerfile/node-load-balancer/nginx.conf:/etc/nginx/nginx.conf:ro
+    environment:
+      - TZ=Africa/Casablanca
+    network_mode: host
+    privileged: true
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    logging:
+          driver: "json-file"
+          options:
+            max-size: "100m"
+            max-file: "5"
+    healthcheck:
+          test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:8000/health"]
+          interval: 15s
+          timeout: 5s
+          retries: 3
+          start_period: 10s
+
+  ethereum-geth-node_service:
+    container_name: ethereum-geth-node_container
+    build:
+      context: ./dockerfile/ethereum-node
+      dockerfile: Dockerfile.geth
+    restart: unless-stopped
+    #ports: # Make sure to uncomment if are not using network_mode on host
+    #  - 30303:30303
+    #  - 30303:30303/udp
+    #  - 8545:8545
+    #  - 8546:8546
+    #  - 8551:8551
+    volumes:
+      - ethereum-geth-node_data:/data
+      - ./dockerfile/ethereum-node/jwt/jwt.hex:/data/jwt.hex
+    command:
+      - --sepolia
+      - --http
+      - --http.api=eth,net,web3
+      - --http.addr=0.0.0.0
+      - --authrpc.addr=0.0.0.0
+      - --authrpc.vhosts=*
+      - --authrpc.jwtsecret=/data/jwt.hex
+      - --authrpc.port=8551
+      - --syncmode=snap
+      - --datadir=/data
+    logging:
+          driver: "json-file"
+          options:
+            max-size: "100m"
+            max-file: "5"
+    network_mode: host
+    healthcheck:
+          test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:8545"]
+          interval: 30s
+          timeout: 10s
+          retries: 3
+          start_period: 60s
+
+  ethereum-prysm-node_service:
+    container_name: ethereum-prysm-node_container
+    build:
+      context: ./dockerfile/ethereum-node
+      dockerfile: Dockerfile.prysm
+    restart: unless-stopped
+    volumes:
+      - ethereum-prysm-node_data:/data
+      - ./dockerfile/ethereum-node/jwt/jwt.hex:/data/jwt.hex
+    depends_on:
+      - ethereum-geth-node_service
+    #ports: # Make sure to uncomment if are not using network_mode on host
+    #  - 4000:4000
+    #  - 3500:3500
+    #  - "9000:9000/udp"
+    command:
+      - --sepolia
+      - --accept-terms-of-use
+      - --datadir=/data
+      - --disable-monitoring
+      - --rpc-host=0.0.0.0
+      - --execution-endpoint=http://127.0.0.1:8551
+      - --jwt-secret=/data/jwt.hex
+      - --rpc-port=4000
+      - --grpc-gateway-corsdomain=*
+      - --grpc-gateway-host=0.0.0.0
+      - --grpc-gateway-port=3500
+      - --min-sync-peers=3
+      - --checkpoint-sync-url=https://checkpoint-sync.sepolia.ethpandaops.io
+      - --genesis-beacon-api-url=https://checkpoint-sync.sepolia.ethpandaops.io
+      - --subscribe-all-data-subnets # Prune mode: without / Prune mode: --custody-subcount=16 / Full node: --subscribe-all-data-subnets
+      - --verbosity=debug
+      #- --suggested-fee-recipient=0xYOUR_ADDRESS # It's warning about this and it's a one-line flag change. Doesn't matter for testnet MEV but builds good habits.
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    network_mode: host
+    healthcheck:
+          test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://127.0.0.1:3500/eth/v1/node/health"]
+          interval: 30s
+          timeout: 10s
+          retries: 3
+          start_period: 600s
+
+volumes:
+  ethereum-geth-node_data:
+  ethereum-prysm-node_data:
+
+
+
+
+
+
+
+
+

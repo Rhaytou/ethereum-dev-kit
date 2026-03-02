@@ -1,0 +1,45 @@
+#sidebar {
+    box-sizing: border-box;
+    width: 0%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: #0a0a0a;
+    border-right: 1px solid #6a0dad;
+    font-family: monospace;
+    color: #e0e0e0;
+}
+
+#sidebar ul {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0;
+    gap: 0.25rem;
+}
+
+#sidebar ul li,
+#sidebar ul li a {
+    font-family: monospace;
+    font-size: 0.85rem;
+    color: #e0e0e0;
+    padding: 0.5rem 1rem;
+    letter-spacing: 0.05em;
+    text-transform: lowercase;
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
+#sidebar ul li a:hover {
+    color: #9b30d9;
+    background: #1a1a1a;
+}
+
+
+
+
+
+
+
+
+
+

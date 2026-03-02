@@ -1,0 +1,77 @@
+/* ------------------- */
+/* Reinitialisation */
+/* ------------------- */
+*, *::before, *::after{
+    box-sizing: border-box;
+
+    margin: 0;
+    box-shadow: none;
+    outline: none;
+    border: none;
+    padding: 0;
+}
+
+html {
+    margin: 0;
+    box-shadow: none;
+    outline: none;
+    border: none;
+    padding: 0;
+}
+
+body {
+    background: #0a0a0a;
+    color: #e0e0e0;
+
+    width: 100vw;
+    height: 100vh;
+
+    margin: 0;
+    box-shadow: none;
+    outline: none;
+    border: none;
+    padding: 0;
+}
+
+#root {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+
+    margin: 0;
+    box-shadow: none;
+    outline: none;
+    border: none;
+    padding: 0;
+
+    overflow: hidden;
+}
+
+a,
+a:visited,
+a:hover,
+a:active,
+a:focus {
+  text-decoration: none;
+  outline: none;
+}
+
+ul, ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
